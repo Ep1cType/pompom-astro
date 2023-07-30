@@ -1,0 +1,16 @@
+---
+interface Props {
+  title: string;
+  link: string;
+}
+
+const { title, link } = Astro.props;
+---
+
+<div class="bg-blue-900 shadow-info rounded-2xl hover:opacity-70">
+  <a class="p-6 md:p-8 block" href={link}>
+    <h2 class="text-2xl mb-2 md:mb-4">{title}</h2>
+    <slot />
+    <span class="underline block mt-2">Перейти</span>
+  </a>
+</div>

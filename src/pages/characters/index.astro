@@ -1,13 +1,38 @@
 ---
-import Layout from "../../layouts/Layout.astro";
+import Layout from "shared/ui/layout.astro";
+import Title from "shared/ui/title.astro";
+import CharacterCard from "shared/ui/character-card.astro";
 import "styles/global.css";
+import fetchApi from "../../shared/lib/strapi";
+import { Character } from "shared/api/character/type";
+import { ApiCollectionResponse } from "shared/api/types";
+
+const response = await fetchApi<ApiCollectionResponse<Character>>({
+  endpoint: 'characters',
+  query: {
+    populate: 'icon',
+    locale: 'ru',
+    'sort[0]': 'name'
+  }
+})
+const characterList = response.data;
 ---
+
 <Layout>
-  <main>
-    <h1 class="text-white">CHAR MAIN PAGE</h1>
-  </main>
+  <div class="container mx-auto px-4 py-8">
+    <Title text="Персонажи" />
+    <ul class="grid grid-cols-4 gap-4 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-10">
+      <!--{characterList.map((item, index) => (-->
+      <!--  <li>{item}</li>-->
+      <!--))}-->
+      {characterList.map((character) => (
+        <CharacterCard
+          name={character.attributes.name}
+          img={character.attributes.icon.data.attributes}
+          starCount={character.attributes.star}
+          element={character.attributes.element}
+        />
+      ))}
+    </ul>
+  </div>
 </Layout>
-
-<style>
-
-</style>

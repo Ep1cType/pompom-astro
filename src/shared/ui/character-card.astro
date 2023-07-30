@@ -1,0 +1,44 @@
+---
+import { ImageDataResponse } from "shared/api/types";
+import { CharacterElementList } from "shared/api/character/type";
+
+interface Props {
+  name: string;
+  img: ImageDataResponse;
+  starCount: "four" | "five";
+  element: CharacterElementList;
+}
+
+const { element, img, name, starCount } = Astro.props;
+---
+
+<li class="card relative group">
+  <div
+    class:list={["aspect-square overflow-hidden", {
+      "bg-gradient-to-b from-[#3F4064] to-[#9C65D7]": starCount === "four",
+      "bg-gradient-to-b from-[#A35D55] to-[#D0AA6E]": starCount === "five",
+    }]}
+  >
+    <img
+      class="w-full h-auto object-contain object-bottom group-hover:scale-105 transition-all duration-100 ease-linear"
+      src={`${import.meta.env.STRAPI_URL}${img.url}`}
+      width={img.width}
+      height={img.height}
+      alt={img.name}
+    />
+  </div>
+  <div
+    class="aspect-square w-6 h-6 absolute right-0 top-0 flex justify-center items-center bg-black rounded-full translate-x-1/2 -translate-y-1/2">
+    <img
+      class="w-5 h-5"
+      src={`/icons/elements/${element}.webp`}
+      width={256}
+      height={256}
+      alt={`${element} icon`}
+    />
+  </div>
+  <a href={`/characters/${name}`} class="text-center mt-1 text-xs/none sm:text-sm md:text-base/tight">
+    <span class="absolute inset-0" />
+    {name}
+  </a>
+</li>
