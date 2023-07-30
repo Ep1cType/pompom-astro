@@ -1,0 +1,18 @@
+---
+interface Props {
+  className: string;
+}
+
+const { className } = Astro.props;
+---
+
+<footer class={`flex-shrink-0 bg-blue-900 py-4 ${className}`}>
+  <div class="container mx-auto px-4">
+    <p class="mb-2 text-xs">
+      pom-pom.pro не является аффилированным и не связан с HoYoverse.
+    </p>
+    <p class="text-xs">
+      Honkai: Star Rail, контент и материалы игры являются товарными знаками и принадлежат HoYoverse.
+    </p>
+  </div>
+</footer>

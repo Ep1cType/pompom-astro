@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "pages/*": ["src/pages/*"],
+      "shared/*": ["src/shared/*"],
+      "styles/*": ["src/styles/*"],
+      "features/*": ["src/features/*"],
+      "entities/*": ["src/entities/*"],
+      "widgets/*": ["src/widgets/*"],
+      "layouts/*": ["scr/layouts/*"]
+    }
+  },
+  "extends": "astro/tsconfigs/strict",
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
+}
