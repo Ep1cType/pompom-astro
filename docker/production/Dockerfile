@@ -1,14 +1,9 @@
-FROM node:lts AS runtime
+FROM node:lts AS build
 WORKDIR /app
-
 COPY . .
-
 RUN yarn install
 RUN yarn build
 
-ENV HOST=0.0.0.0
-ENV PORT 4000
-
+FROM httpd:2.4 AS runtime
+COPY --from=build /app/dist /usr/local/apache2/htdocs/
 EXPOSE 4000
-
-CMD node ./dist/server/entry.mjs

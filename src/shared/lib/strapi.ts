@@ -1,4 +1,3 @@
-
 interface Props {
   endpoint: string;
   query?: Record<string, string>;
@@ -15,11 +14,11 @@ interface Props {
  * @returns
  */
 export default async function fetchApi<T>({
-                                            endpoint,
-                                            query,
-                                            wrappedByKey,
-                                            wrappedByList,
-                                          }: Props): Promise<T> {
+  endpoint,
+  query,
+  wrappedByKey,
+  wrappedByList,
+}: Props): Promise<T> {
   if (endpoint.startsWith("/")) {
     endpoint = endpoint.slice(1);
   }
