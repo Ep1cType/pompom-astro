@@ -1,21 +1,122 @@
 ---
 import Layout from "shared/ui/layout.astro";
 import "styles/global.css";
+import fetchApi from "shared/lib/strapi";
+import { CharacterSkill } from "widgets/character-skill";
+import { ApiCollectionResponse } from "shared/api/types";
+import { CharacterExtend } from "shared/api/character/type";
+import { ResponseDataItem } from "shared/api/types";
+import { checkImageFormat } from "shared/utils/check-image-format";
 
-export function getStaticPaths() {
-  return [
-    {params: {slug: '1'}},
-    {params: {slug: '2'}},
-    {params: {slug: '3'}},
-  ];
+export async function getStaticPaths() {
+  const response = await fetchApi<ApiCollectionResponse<CharacterExtend>>({
+    endpoint: "characters",
+    query: {
+      "populate[0]": "info",
+      "populate[1]": "info.main_skill,info.image,info.meta_img",
+      "populate[3]": "info.main_skill.icon",
+      locale: "ru",
+    },
+  });
+
+  return response.data.map((char) => ({
+    params: {
+      slug: char.attributes.name,
+    },
+    props: {
+      char,
+    },
+  }));
 }
 
-const { slug } = Astro.params;
+const { char } = Astro.props as { char: ResponseDataItem<CharacterExtend> };
+
+const starCount = char.attributes.star === "five" ? 5 : 4;
+const imageFormat = char.attributes.info?.image?.data?.attributes
+  ? checkImageFormat(
+    char.attributes.info.image.data.attributes.formats,
+  )
+  : "thumbnail";
+const splashImage = char.attributes.info?.image?.data?.attributes?.formats?.[imageFormat];
 ---
 
 
 <Layout>
-  <main>
-    <h1 class="text-white">HELLO {slug}</h1>
-  </main>
+  <div class="container mx-auto px-4 py-8">
+    <section class="flex flex-col-reverse md:flex-row justify-between items-center gap-3 md:mb-8 mb-4">
+      <div class="md:max-w-[50%]">
+        <h1 class="text-4xl">{char.attributes.name}</h1>
+
+        <p class="mb-8">
+          {[...Array(starCount)].map((_, index) => (
+            <img
+              class="w-4 h-4 inline mr-2"
+              src={`/icons/common/level_star.png`}
+              width={42}
+              height={42}
+              alt={`${char.attributes.path} icon`}
+            />
+          ))}
+        </p>
+
+        <p class="flex items-center mb-2">
+						<span class="mr-2 font-medium text-base">
+							<!--{t('path.title', { ns: 'character' })}:-->
+						</span>
+          <img
+            class="w-5 h-5 inline mr-2"
+            src={`/icons/paths/${char.attributes.path}.png`}
+            width={108}
+            height={108}
+            alt={`${char.attributes.path} icon`}
+          />{" "}
+          <span class="opacity-80">
+							<!--{t(`path.${char.attributes.path}`, { ns: 'character' })}-->
+						</span>
+        </p>
+
+        <p class="flex items-center mb-2">
+						<span class="mr-2 font-medium text-base">
+							<!--{t("element.title", { ns: "character" })}:-->
+						</span>
+          <img
+            class="w-5 h-5 inline mr-2"
+            src={`/icons/elements/${char.attributes.element}.webp`}
+            width={256}
+            height={256}
+            alt={`${char.attributes.element} icon`}
+          />
+          <span class="opacity-80">
+							<!--{t(`element.${char.attributes.element}`, {-->
+            <!--  ns: "character",-->
+            <!--})}-->
+           </span>
+        </p>
+
+        <p class="text-lg/tight">
+          {char.attributes.info?.story}
+        </p>
+
+      </div>
+
+      {splashImage && (
+        <img
+          class="md:max-w-[50%]"
+          src={`${import.meta.env.STRAPI_URL}${splashImage?.url}`}
+          width={splashImage?.width}
+          height={splashImage?.height}
+          alt={char.attributes.info.image.data.attributes.name}
+        />
+      )}
+    </section>
+
+    <section class="mb-6">
+      <h2 class="text-2xl font-medium mb-4">Навыки</h2>
+      <div class="flex flex-col lg:grid lg:grid-cols-2 gap-4">
+        {char.attributes.info?.main_skill?.map((skill) => (
+          <CharacterSkill skill={skill} />
+        ))}
+      </div>
+    </section>
+  </div>
 </Layout>

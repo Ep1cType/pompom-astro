@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "jsxImportSource": "solid-js",
+    "jsx": "preserve",
     "baseUrl": "./",
     "paths": {
       "pages/*": ["src/pages/*"],
@@ -13,5 +15,5 @@
   },
   "extends": "astro/tsconfigs/strict",
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
 }

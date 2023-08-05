@@ -6,6 +6,11 @@ import solid from '@astrojs/solid-js';
 export default defineConfig({
   integrations: [tailwind({
     applyBaseStyles: false,
+  }), solid()],
+  build: {
+    inlineStylesheets: 'auto',
+  },
+  site: 'https://pom-pom.pro',
+  compressHTML: true,
 
-  }), solid()]
 });

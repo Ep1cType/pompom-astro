@@ -1,0 +1,30 @@
+version: '3.8'
+
+networks:
+  proxy:
+    attachable: true
+    internal: false
+    name: proxy
+
+services:
+  production_stage:
+    build:
+      context: ../../
+      dockerfile: docker/staging/Dockerfile
+    image: ${COMPOSE_PROJECT_NAME}
+    restart: always
+    networks:
+      - proxy
+    healthcheck:
+      disable: true
+    expose:
+      - 4000
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+      - traefik.http.routers.production_stage.entrypoints=websecure
+      - traefik.http.routers.production_stage.rule=Host(`smtp.pom-pom.pro`)
+      - traefik.http.routers.production_stage.tls=true
+      - traefik.http.routers.production_stage.tls.certresolver=letsencrypt
+      - traefik.http.routers.production_stage.service=production_stage_service
+      - traefik.http.services.production_stage_service.loadbalancer.server.port=5000

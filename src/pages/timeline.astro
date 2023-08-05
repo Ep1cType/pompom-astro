@@ -1,0 +1,29 @@
+---
+import Layout from "shared/ui/layout.astro";
+import Title from "shared/ui/title.astro";
+import { Timeline } from "widgets/timeline";
+import "styles/global.css";
+import "styles/timeline.css";
+import fetchApi from "../shared/lib/strapi";
+import { ApiCollectionResponse, EventItem } from "../shared/api/types";
+
+const response = await fetchApi<ApiCollectionResponse<EventItem>>({
+  endpoint: "events",
+  query: {
+    populate: "*",
+  },
+});
+
+const eventList = response.data;
+---
+
+
+<Layout>
+  <div class="container mx-auto px-4 py-8">
+    <Title text="Лента событий" />
+    <Timeline
+      client:only="solid-js"
+      eventList={eventList}
+    />
+  </div>
+</Layout>

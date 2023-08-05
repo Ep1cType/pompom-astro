@@ -69,3 +69,33 @@ export interface ThumbnailFormat {
   width: number;
   height: number;
 }
+
+export interface EventItem {
+  name: string;
+  start_date: string;
+  end_date: string;
+  color: string;
+  link: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  type: EventTypeList;
+  image: {
+    data: ResponseDataItem<ImageDataResponse> | null;
+  };
+}
+
+export type EventTypeList =
+  | "char_banner"
+  | "cone_banner"
+  | "battle_pass"
+  | "shop"
+  | "oblivion";
+
+export interface TrackElement {
+  start: Date;
+  end: Date;
+  title: string;
+  image: ImageDataResponse | null;
+  link: string;
+}
