@@ -4,20 +4,26 @@ import Footer from "shared/ui/footer.astro";
 
 interface Props {
   title: string;
+  description: string;
+  type?: string;
 }
 
-const { title } = Astro.props;
+const { title, description, type = 'website' } = Astro.props;
 ---
 
 <!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="description" content="Astro description">
+  <meta name="description" content={description}>
+  <meta property="og:description" content={description}>
   <meta name="viewport" content="width=device-width" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <meta name="generator" content={Astro.generator} />
+  <meta property="og:locale" content="ru">
   <title>{title}</title>
+  <meta property="og:title" content={title}>
+  <meta property="og:type" content={type} />
 </head>
 <body class="flex flex-col min-h-screen h-full text-white w-full">
   <Header />

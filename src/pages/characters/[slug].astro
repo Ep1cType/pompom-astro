@@ -41,14 +41,18 @@ const splashImage = char.attributes.info?.image?.data?.attributes?.formats?.[ima
 ---
 
 
-<Layout>
+<Layout
+  title={`${char.attributes.name} | pom-pom.pro`}
+  description={char.attributes?.info?.story}
+  type="profile"
+>
   <div class="container mx-auto px-4 py-8">
     <section class="flex flex-col-reverse md:flex-row justify-between items-center gap-3 md:mb-8 mb-4">
       <div class="md:max-w-[50%]">
         <h1 class="text-4xl">{char.attributes.name}</h1>
 
         <p class="mb-8">
-          {[...Array(starCount)].map((_, index) => (
+          {[...Array(starCount)].map(() => (
             <img
               class="w-4 h-4 inline mr-2"
               src={`/icons/common/level_star.png`}
