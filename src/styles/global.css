@@ -2,3 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+.scrollBar::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+.scrollBar::-webkit-scrollbar-track {
+    background: #1e3a8a;
+    border-radius: 5px;
+}
+
+.scrollBar::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: #ffffff;
+}
+
