@@ -1,9 +1,11 @@
-FROM node:lts AS build
+FROM node:lts-alpine AS build
 WORKDIR /app
+COPY package*.json ./
+RUN npm install
 COPY . .
-RUN yarn install
-RUN yarn build
+RUN npm run build
 
-FROM httpd:2.4 AS runtime
-COPY --from=build /app/dist /usr/local/apache2/htdocs/
+FROM nginx:alpine AS runtime
+COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
+COPY --from=build /app/dist /usr/share/nginx/html
 EXPOSE 4000

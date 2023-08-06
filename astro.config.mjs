@@ -12,5 +12,5 @@ export default defineConfig({
   },
   site: 'https://pom-pom.pro',
   compressHTML: true,
-
+  output: 'static'
 });
